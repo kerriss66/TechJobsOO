@@ -2,7 +2,6 @@
 using TechJobs.Models;
 using TechJobs.Data;
 using TechJobs.ViewModels;
-using MailKit.Search;
 
 namespace TechJobs.Controllers
 {
@@ -22,20 +21,14 @@ namespace TechJobs.Controllers
         {
             SearchJobsViewModel jobsViewModel = new SearchJobsViewModel();
             jobsViewModel.Title = "Search";
-            ViewBag.error = "";
             return View(jobsViewModel);
         }
 
         // Process search submission and display search results
         public IActionResult Results(SearchJobsViewModel jobsViewModel)
         {
-            if (jobsViewModel == null)
+            if (ModelState.IsValid)
             {
-                ViewBag.error = "Please enter a search term";
-            }
-            else
-            {
-
                 if (jobsViewModel.Column.Equals(JobFieldType.All) || jobsViewModel.Value.Equals(""))
                 {
                     jobsViewModel.Jobs = jobData.FindByValue(jobsViewModel.Value);
@@ -45,9 +38,8 @@ namespace TechJobs.Controllers
                     jobsViewModel.Jobs = jobData.FindByColumnAndValue(jobsViewModel.Column, jobsViewModel.Value);
                 }
             }
-            
-            jobsViewModel.Title = "Search";
 
+            jobsViewModel.Title = "Search";
             return View("Index", jobsViewModel);
         }
     }
