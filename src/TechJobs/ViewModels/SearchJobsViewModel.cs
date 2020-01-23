@@ -12,10 +12,8 @@ namespace TechJobs.ViewModels
 
         // The search results
         public List<Job> Jobs { get; set; }
-        public JobFieldType Column { get; set; } = JobFieldType.All;
 
         // The search value
-        [Required]
         [Display(Name = "Keyword:")]
         public string Value { get; set; } = "";
     }
